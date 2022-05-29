@@ -34,8 +34,8 @@ namespace Parky.API.Controllers
             return Ok(nationalParksDto);
         }
 
-        [HttpGet("{Id:int}")]
-        public IActionResult GetById(int id)
+        [HttpGet("{id:int}")]
+        public IActionResult GetById([FromRoute] int id)
         {
             var nationalPark = _nationalParkRepository.GetById(id);
             if (nationalPark == null)
@@ -48,6 +48,11 @@ namespace Parky.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(201,Type =typeof(NationalParkDto))]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
         public IActionResult Create([FromBody] NationalParkDto nationalParkDto)
         {
             if (nationalParkDto == null)

@@ -15,6 +15,8 @@ using Microsoft.EntityFrameworkCore;
 using Parky.API.Repository.IRepository;
 using Parky.API.Repository;
 using Parky.API.Mapper;
+using System.Reflection;
+using System.IO;
 
 namespace Parky.API
 {
@@ -38,7 +40,26 @@ namespace Parky.API
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Parky.API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Parky.API",
+                    Version = "v1",
+                    Description = "This is basic API",
+                    Contact = new OpenApiContact
+                    {
+                        Email = "ersngun@gmail.com",
+                        Name = "Ersin Gun",
+                        Url = new Uri("https://www.google.com"),
+                    },
+                    License = new OpenApiLicense()
+                    {
+                        Name = "MIT Licence",
+                        Url = new Uri("https://www.google.com")
+                    }
+                });
+                var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var cmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
+                c.IncludeXmlComments(cmlCommentsFullPath);
             });
         }
 
