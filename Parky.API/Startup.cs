@@ -12,6 +12,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Parky.API.Data;
 using Microsoft.EntityFrameworkCore;
+using Parky.API.Repository.IRepository;
+using Parky.API.Repository;
+using Parky.API.Mapper;
 
 namespace Parky.API
 {
@@ -27,7 +30,11 @@ namespace Parky.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApplicationDbContext>
+                (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<INationalParkRepository, NationalParkRepository>();
+            services.AddAutoMapper(typeof(MapConfigurations));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
