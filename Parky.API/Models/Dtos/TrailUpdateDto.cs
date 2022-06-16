@@ -3,7 +3,7 @@ using static Parky.API.Models.Enums.TrialEnums;
 
 namespace Parky.API.Models.Dtos
 {
-    public class TrialDto
+    public class TrailUpdateDto
     {
         public int Id { get; set; }
         public string Name { get; set; }

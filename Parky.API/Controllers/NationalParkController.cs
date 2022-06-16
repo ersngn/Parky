@@ -13,6 +13,7 @@ namespace Parky.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "ParkyOpenAPISpecNP")]
     public class NationalParkController : Controller
     {
         private readonly INationalParkRepository _nationalParkRepository;

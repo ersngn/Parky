@@ -36,15 +36,34 @@ namespace Parky.API
                 (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<INationalParkRepository, NationalParkRepository>();
+            services.AddScoped<ITrialRepository, TrialRepository>();
             services.AddAutoMapper(typeof(MapConfigurations));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
+                c.SwaggerDoc("ParkyOpenAPISpecNP", new OpenApiInfo
                 {
-                    Title = "Parky.API",
+                    Title = "Parky.API (National Park)",
                     Version = "v1",
-                    Description = "This is basic API",
+                    Description = "This is basic Parky API NP",
+                    Contact = new OpenApiContact
+                    {
+                        Email = "ersngun@gmail.com",
+                        Name = "Ersin Gun",
+                        Url = new Uri("https://www.google.com"),
+                    },
+                    License = new OpenApiLicense()
+                    {
+                        Name = "MIT Licence",
+                        Url = new Uri("https://www.google.com")
+                    }
+                });
+
+                c.SwaggerDoc("ParkyOpenAPISpecTrails", new OpenApiInfo
+                {
+                    Title = "Parky.API (Trails)",
+                    Version = "v1",
+                    Description = "This is basic Parky API Trails",
                     Contact = new OpenApiContact
                     {
                         Email = "ersngun@gmail.com",
@@ -70,17 +89,22 @@ namespace Parky.API
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Parky.API v1"));
-            }
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/ParkyOpenAPISpecNP/swagger.json", "Parky.API NP");
+                    c.SwaggerEndpoint("/swagger/ParkyOpenAPISpecTrails/swagger.json", "Parky.API Trails");
             });
+
+                app.UseRouting();
+
+                app.UseAuthorization();
+
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                });
+            }
         }
     }
 }
+
